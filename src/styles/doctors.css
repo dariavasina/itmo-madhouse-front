@@ -1,0 +1,15 @@
+.doctors {
+    padding: 20px;
+  }
+  
+  .doctors ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .doctors li {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+  

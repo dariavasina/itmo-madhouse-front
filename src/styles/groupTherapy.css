@@ -1,0 +1,55 @@
+/* Общие стили для компонента */
+.group-therapy-container {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок */
+.group-therapy-container h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Контейнер для информации о пациенте */
+.patient-info {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для текста с врачом и специализацией */
+.patient-info p {
+    font-size: 16px;
+    margin: 8px 0;
+    color: #555;
+}
+
+.patient-info p strong {
+    color: #333;
+}
+
+/* Стили для текста, если терапия не назначена */
+.no-therapy-message {
+    font-size: 16px;
+    color: #888;
+    margin-top: 20px;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Подсветка и разделение информации */
+.patient-info p:last-child {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+/* Добавление отступов в общий контейнер */
+.group-therapy-container > div {
+    margin-top: 20px;
+}

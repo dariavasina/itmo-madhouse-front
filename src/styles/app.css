@@ -1,0 +1,178 @@
+/* .App {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #e7b0b0;
+    padding: 20px;
+} */
+
+.mb3 {
+    margin-bottom: 16px; /* Пример стандартного отступа */
+}
+
+.add-ticket-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.add-ticket-button:hover {
+    background-color: #45a049;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 20px 0;
+}
+
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Занимает всю высоту экрана */
+    background-image: url('../hogwarts.jpg'); /* Путь к вашему изображению */
+    background-size: cover; /* Масштабирует изображение на весь контейнер */
+    background-position: center; /* Центрирует изображение */
+    background-repeat: no-repeat; /* Отключает повтор изображения */
+    /* padding: 20px;  */
+}
+
+.auth-inner {
+    background-color: white; /* Белый фон для формы */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Ограничение ширины */
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-password button {
+    background-color: transparent;
+    border: none;
+    color: #4CAF50;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.forgot-password button:hover {
+    text-decoration: underline;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+}
+
+/* Стили для компонента Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.profile-text {
+    font-size: 16px;
+}
+
+.profile-icon {
+    font-size: 20px;
+}
+
+
+.App {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    /* padding: 20px; */
+}
+
+
+.main-content {
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden;
+  }
+  
+  /* Боковая панель (Sidebar) */
+  .sidebar {
+    width: 300px; 
+    background-color: #f4f4f4; /* Светло-серый фон */
+    height: 100vh; /* Высота на весь экран */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Тень для визуального разделения */
+    position: fixed; /* Фиксируем на экране */
+    top: 0;
+    left: 0;
+  }
+  
+ .page-content {
+    flex: 1;
+    margin-left: 270px; 
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto; 
+  } 
+
+
