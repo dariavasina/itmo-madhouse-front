@@ -1,0 +1,20 @@
+.my-patients {
+    padding: 20px;
+  }
+  
+  .my-patients table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .my-patients th, .my-patients td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .my-patients th {
+    background-color: #f4f4f4;
+  }
+  

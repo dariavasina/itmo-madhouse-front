@@ -6,6 +6,9 @@ const initialState = {
     doctors: [],
     loading: false,
     error: null,
+    doctor: null,
+    id: null,
+    specialisation: null,
 };
 
 export const fetchDoctors = createAsyncThunk('doctors/fetchDoctors', async (args) => {
@@ -24,20 +27,49 @@ export const fetchDoctors = createAsyncThunk('doctors/fetchDoctors', async (args
     return await response.data;
 });
 
-export const createPatientGroup = createAsyncThunk('doctors/createPatientGroup', async (args, { rejectWithValue }) => {
+export const getDoctor = createAsyncThunk('doctors/getDoctor', async (args, { rejectWithValue }) => {
     const getHeaders = {
         headers: {
-            'Authorization': 'Bearer ' + args[3],
+            'Authorization': 'Bearer ' + args[0],
             'Content-Type': 'application/json; charset=utf-8'
         }
     }
     try {
-        const response = await axios.post(`${API_URL}/api/doctors/${args[0]}/create-group?specialisation=${args[1]}`, args[2], getHeaders);
-        return response.data;
+        const response = await axios.get(`${API_URL}/api/doctor/me`, getHeaders);
+        return await response.data;
     } catch (error) {
-        return rejectWithValue('Ошибка при создании группы пациентов');
+        if (error.response.status === 404) {
+            return rejectWithValue(`Доктор не найден`);
+        }
+        throw rejectWithValue(error.response?.data?.message || error.message || 'Произошла ошибка');
     }
 });
+
+
+export const createPatientGroup = createAsyncThunk(
+  'doctors/createPatientGroup',
+  async ({ doctorId, specialisation, patients, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/doctors/${doctorId}/create-group`,
+        patients,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+          params: { specialisation }, // Используем `params` для query параметров
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Ошибка при создании группы пациентов'
+      );
+    }
+  }
+);
+
 
 const doctorSlice = createSlice({
     name: 'doctors',
@@ -69,6 +101,21 @@ const doctorSlice = createSlice({
                 }
             })
             .addCase(createPatientGroup.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(getDoctor.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getDoctor.fulfilled, (state, action) => {
+                state.loading = false;
+                state.doctor = action.payload; 
+                console.log("in getDoctor", action.payload);
+                state.id =  action.payload.id;
+                state.specialisation = action.payload.specialisation;
+            })
+            .addCase(getDoctor.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

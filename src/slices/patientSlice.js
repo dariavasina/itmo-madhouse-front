@@ -6,10 +6,11 @@ import { API_URL } from '../config';
 export const fetchPatients = createAsyncThunk('patients/fetchPatients', async (args) => {
     const getHeaders = {
         headers: {
-            'Authorization': 'Bearer ' + args[1],
+            'Authorization': 'Bearer ' + args[0],
             'Content-Type': 'application/json; charset=utf-8'
         }
     }
+    console.log(getHeaders);
     const response = await axios.get(`${API_URL}/api/patients`, getHeaders);
     if (response.status !== 200) {
         throw new Error('Failed to fetch patients');
@@ -65,12 +66,13 @@ export const addPatient = createAsyncThunk('patients/addPatient', async (args, {
 export const updatePatient = createAsyncThunk('patients/updatePatient', async (args, { rejectWithValue }) => {
     const getHeaders = {
         headers: {
-            'Authorization': 'Bearer ' + args[1],
+            'Authorization': 'Bearer ' + args[2],
             'Content-Type': 'application/json; charset=utf-8'
         }
     }
     try {
-        const response = await axios.put(`${API_URL}/api/patient`, args[0], getHeaders);
+        console.log(args[0], args[1], getHeaders);
+        const response = await axios.put(`${API_URL}/api/patient/${args[0]}`, args[1], getHeaders);
         return await response.data;
 
     } catch (error) {
@@ -118,6 +120,7 @@ const patientSlice = createSlice({
             .addCase(fetchPatients.fulfilled, (state, action) => {
                 state.loading = false;
                 state.patients = action.payload;
+                console.log(action.payload);
             })
             .addCase(fetchPatients.rejected, (state, action) => {
                 state.loading = false;

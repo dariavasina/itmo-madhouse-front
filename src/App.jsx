@@ -11,8 +11,13 @@ import Sidebar from "./components/Sidebar";
 import Profile from "./pages/Profile";
 import Appointments from "./pages/Appointments";
 import GroupTherapy from "./pages/GroupTherapy";
-import BookAppointments from "./pages/BookAppointments";
+import BookAppointment from "./pages/BookAppointment";
 import Doctors from "./pages/Doctors";
+import DoctorProfile from "./pages/DoctorProfile";
+import DoctorAppointments from "./pages/DoctorAppointments";
+import DoctorPatientGroups from "./pages/DoctorPatientGroups";
+import Testing from "./pages/Testing";
+import MyPatients from "./pages/MyPatients";
 
 function AppContent() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -21,25 +26,35 @@ function AppContent() {
   return (
     <Router>
       <div className="App">
-        {/* <Header /> */}
         {isAuthenticated ? (
-          userRole === "PATIENT" ? (
-            <div className="main-content">
-              <Sidebar />
-              <div className="page-content">
-                <Routes>
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/appointments" element={<Appointments />} />
-                  <Route path="/group-therapy" element={<GroupTherapy />} />
-                  <Route path="/book-appointment" element={<BookAppointments />} />
-                  <Route path="/doctors" element={<Doctors />} />
-                  <Route path="*" element={<Navigate to="/profile" />} />
-                </Routes>
-              </div>
+          <div className="main-content">
+            <Sidebar />
+            <div className="page-content">
+              <Routes>
+                {userRole === "PATIENT" ? (
+                  <>
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/appointments" element={<Appointments />} />
+                    <Route path="/group-therapy" element={<GroupTherapy />} />
+                    <Route path="/book-appointment" element={<BookAppointment />} />
+                    <Route path="/doctors" element={<Doctors />} />
+                    <Route path="*" element={<Navigate to="/profile" />} />
+                    <Route path="/testing" element={<Testing />} />
+                  </>
+                ) : userRole === "DOCTOR" ? (
+                  <>
+                    <Route path="/profile" element={<DoctorProfile />} />
+                    <Route path="/appointments" element={<DoctorAppointments />} />
+                    <Route path="/group-therapy" element={<DoctorPatientGroups />} />
+                    <Route path="my-patients" element={<MyPatients />} />
+                    <Route path="*" element={<Navigate to="/profile" />} />
+                  </>
+                ) : (
+                  <Navigate to="/login" />
+                )}
+              </Routes>
             </div>
-          ) : (
-            <h1>ЛК врача</h1>
-          )
+          </div>
         ) : (
           <Auth />
         )}
@@ -47,6 +62,7 @@ function AppContent() {
     </Router>
   );
 }
+
 
 const App = () => {
   return (

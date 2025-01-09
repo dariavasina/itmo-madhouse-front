@@ -5,6 +5,12 @@ import storage from 'redux-persist/lib/storage';
 import patientSlice from "./slices/patientSlice";
 import doctorSlice from "./slices/doctorSlice";
 import appointmentSlice from "./slices/appointmentSlice";
+import patientGroupSlice from './slices/patientGroupSlice';
+import spellSlice from './slices/spellSlice';
+import creatureSlice from './slices/creatureSlice';
+import artifactSlice from './slices/artifactSlice';
+import diseaseSlice from './slices/diseaseSlice';
+import treatmentSlice from './slices/treatmentSlice';
 import {persistReducer,
     persistStore,
     FLUSH,
@@ -28,6 +34,12 @@ const rootReducer = combineReducers({
     patient: patientSlice,
     doctor: doctorSlice,
     appointment: appointmentSlice,
+    patientGroup: patientGroupSlice,
+    spell: spellSlice,
+    creature: creatureSlice,
+    artifact: artifactSlice,
+    disease: diseaseSlice,
+    treatment: treatmentSlice,
 })
 
 
