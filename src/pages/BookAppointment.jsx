@@ -14,12 +14,18 @@ const BookAppointment = () => {
     const [specialization, setSpecialization] = useState('');
     const [doctorId, setDoctorId] = useState('');
     const [selectedSlot, setSelectedSlot] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(''); // Новое состояние
     const unavailableSlots = useSelector((state) => state.appointment.unavailableSlots);
     const doctors = useSelector((state) => state.doctor.doctors);
     const patientId = useSelector((state) => state.patient.id);
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
+    const [successMessage, setSuccessMessage] = useState(false);
+    const [notification, setNotification] = useState(null); // Для уведомлений
+
+    const showNotification = (message, type = "success") => {
+        setNotification({ message, type });
+        setTimeout(() => setNotification(null), 3000); // Уведомление исчезает через 3 секунды
+    };
 
     useEffect(() => {
         dispatch(getPatient([token]));
@@ -63,7 +69,7 @@ const BookAppointment = () => {
 
     const handleSubmit = () => {
         if (!selectedSlot || !doctorId) {
-            alert('Выберите врача и временной слот');
+            showNotification("Ошибка: не выбран врач или временной слот.", "error");
             return;
         }
 
@@ -78,22 +84,31 @@ const BookAppointment = () => {
             status: 'BOOKED',
             notes: '',
             token,
-        }));
+        }))
+        .unwrap()
+        .then(() => {
+            showNotification("Вы успешно записались на прием!", "success");
+        })
+        .catch((error) => {
+            showNotification("Ошибка при записи на прием: " + error, "error");
+        });
+
 
         // Сброс формы и установка сообщения
         setSpecialization('');
         setDoctorId('');
         setSelectedSlot(null);
         setSelectedDate(new Date());
-        setSuccessMessage('Вы успешно записались на прием!');
     };
 
     return (
         <div>
             <h1>Запись на прием</h1>
-
-            {successMessage && <div className="success-message">{successMessage}</div>} {/* Сообщение */}
-
+            {notification && (
+                <div className={`notification ${notification.type}`}>
+                {notification.message}
+                </div>
+            )}
             {!successMessage && ( // Показываем форму только если нет сообщения
                 <>
                     <label htmlFor="specialization">Выберите специализацию:</label>

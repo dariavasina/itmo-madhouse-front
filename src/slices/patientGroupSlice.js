@@ -7,6 +7,7 @@ const initialState = {
     loading: false,
     error: null,
     patientGroup: null,
+    groupTherapies: [],
 };
 
 export const fetchPatientGroupsByDoctor = createAsyncThunk('patientGroups/fetchPatientGroupsByDoctor', async (args) => {
@@ -43,6 +44,39 @@ export const deletePatientGroup = createAsyncThunk('patientGroups/deletePatientG
     }
 });
 
+export const fetchGroupTherapiesByPatientGroup = createAsyncThunk('patientGroups/fetchGroupTherapiesByPatientGroup', async (args) => {
+    const getHeaders = {
+        headers: {
+            'Authorization': 'Bearer ' + args[1]
+        }
+    }
+
+    console.log(getHeaders);
+    const response = await axios.get(`${API_URL}/api/group-therapies/patient-group/${args[0]}`, getHeaders);
+    if (response.status !== 200) {
+        throw new Error('Failed to fetch group therapies by patient group');
+    }
+    console.log(response.data);
+    return await response.data;
+});
+
+export const addGroupTherapy = createAsyncThunk('patientGroups/addGroupTherapy', async (args, { rejectWithValue }) => {
+    const getHeaders = {
+        headers: {
+            'Authorization': 'Bearer ' + args[1],
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }
+    try{
+        const response = await axios.post(`${API_URL}/api/group-therapy`, args[0], getHeaders);
+        console.log("response")
+        return await response.data;
+    } catch (error) {
+        throw rejectWithValue(error.response?.data?.message || error.message || 'Произошла ошибка');
+    }
+}
+);
+
 
 const patientGroupSlice = createSlice({
     name: 'patientGroups',
@@ -63,6 +97,19 @@ const patientGroupSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+            .addCase(fetchGroupTherapiesByPatientGroup.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchGroupTherapiesByPatientGroup.fulfilled, (state, action) => {
+                state.loading = false;
+                state.groupTherapies = action.payload;
+                console.log(action.payload);
+            })
+            .addCase(fetchGroupTherapiesByPatientGroup.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
             .addCase(deletePatientGroup.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -74,6 +121,18 @@ const patientGroupSlice = createSlice({
                 );
             })
             .addCase(deletePatientGroup.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(addGroupTherapy.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addGroupTherapy.fulfilled, (state, action) => {
+                state.loading = false;
+                state.groupTherapies.push(action.payload);
+            })
+            .addCase(addGroupTherapy.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

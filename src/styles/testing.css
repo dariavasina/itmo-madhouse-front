@@ -7,6 +7,15 @@
     margin: auto;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+  .page-content {
+    background-image: url('../emblem.png');
+    background-size: 20%; /* Масштабирует изображение на весь контейнер */
+    background-position: right bottom; /* Центрирует изображение */
+    background-repeat: no-repeat;
+    margin-left: 250px;
+
+  }
   
   .title {
     font-size: 2rem;

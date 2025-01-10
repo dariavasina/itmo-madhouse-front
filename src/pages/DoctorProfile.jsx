@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctor } from "../slices/doctorSlice";
 import "../styles/profile.css";
+import { updatePatient } from "../slices/patientSlice";
 
 const DoctorProfile = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const DoctorProfile = () => {
   }, [doctor]);
 
   const handleSave = () => {
-    // Логика для сохранения данных
+    dispatch(updatePatient([patient, token]))
     setIsEditing(false);
   };
 

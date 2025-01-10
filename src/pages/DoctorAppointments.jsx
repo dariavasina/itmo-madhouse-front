@@ -9,7 +9,8 @@ import { fetchArtifacts } from "../slices/artifactSlice";
 import { fetchDiseases } from "../slices/diseaseSlice";
 import { addTreatment } from "../slices/treatmentSlice";
 import { updatePatient } from "../slices/patientSlice";
-import { LuChartNoAxesColumnDecreasing } from "react-icons/lu";
+import { removeAppointmentById } from "../slices/appointmentSlice";
+import { fetchPatientGroupsByDoctor } from "../slices/patientGroupSlice";
 
 const DoctorAppointments = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,8 @@ const DoctorAppointments = () => {
   const [pastAppointments, setPastAppointments] = useState([]);
   const [activeTab, setActiveTab] = useState("current");
   const [showModal, setShowModal] = useState(false); 
+  const [showModalToDelete, setShowModalToDelete] = useState(false);
+  const [appointmentToDelete, setAppointmentToDelete] = useState(null); // ID записи для удаления
   const [appointmentToEdit, setAppointmentToEdit] = useState(null); 
   const [formData, setFormData] = useState({
     diagnosis: "",
@@ -154,9 +157,32 @@ const DoctorAppointments = () => {
     setShowModal(true);
   };
 
+  const openModalToDelete = (appointmentId) => {
+    setAppointmentToDelete(appointmentId);
+    setShowModalToDelete(true);
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setAppointmentToEdit(null);
+  };
+
+  const closeModalToDelete = () => {
+    setShowModalToDelete(false);
+    setAppointmentToDelete(null);
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (appointmentToDelete) {
+        await dispatch(removeAppointmentById([appointmentToDelete, token]));
+        dispatch(fetchAppointmentsByDoctor([id, token]));
+        setShowModalToDelete(false);
+        setAppointmentToDelete(null);
+      }
+    } catch (error) {
+      console.error("Ошибка при удалении записи:", error);
+    }
   };
 
   const renderAppointments = (list, isCurrent) =>
@@ -167,8 +193,17 @@ const DoctorAppointments = () => {
           <p><strong>Пациент:</strong></p>
           <p><strong>Имя:</strong> {appointment.patient.name}</p>
           <p><strong>Дата рождения:</strong> {appointment.patient.dateOfBirth}</p>
-          <p><strong>Заболевание:</strong> {appointment.patient.disease.name}</p>
+          <p><strong>Заболевание:</strong> {appointment.patient.disease?.name || "Не указано"}</p>
+
         </div>
+        {isCurrent && (
+          <button
+            className="delete-button"
+            onClick={() => openModalToDelete(appointment.id)}
+          >
+            Удалить
+          </button>
+        )}
         {!isCurrent && (!appointment.status || !appointment.notes) && (
           <button
             className="fill-results-button"
@@ -210,6 +245,22 @@ const DoctorAppointments = () => {
           : renderAppointments(pastAppointments, false)}
       </ul>
 
+      {showModalToDelete && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Вы уверены, что хотите удалить эту запись?</p>
+            <div className="modal-actions">
+              <button className="confirm-button" onClick={handleDelete}>
+                Да, удалить
+              </button>
+              <button className="cancel-button" onClick={closeModalToDelete}>
+                Отмена
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {showModal && (
         <div className="modal">
           <div className="modal-content">
